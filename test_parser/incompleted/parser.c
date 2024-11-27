@@ -4,11 +4,12 @@
  * @version 1.0
  */
 
- /*
-  Thêm kiểu string
-  Thêm phép toán lấy phần dư %
-  Thêm cấu trúc DO <statement> WHILE <statement> (hoặc các cấu trúc tương tự)
- */
+/*
+
+    Work for class test 27/11/2024, by Nguyen Van Dang - 20215033 with the help of Github Copilot in explaining, debugging and writing duplicate parts of code.
+    Test case file: test_parser/test/example8.kpl
+    Output file when running test case: test_parser/incompleted/out8.txt
+*/
 
 #include <stdlib.h>
 
