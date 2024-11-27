@@ -4,6 +4,12 @@
  * @version 1.0
  */
 
+ /*
+  Thêm kiểu string
+  Thêm phép toán lấy phần dư %
+  Thêm cấu trúc DO <statement> WHILE <statement> (hoặc các cấu trúc tương tự)
+ */
+
 #include <stdlib.h>
 
 #include "reader.h"
@@ -82,18 +88,15 @@ void compileBlock5(void) {
 }
 
 void compileConstDecls(void) {
-  // TODO
-  if (lookAhead->tokenType==TK_IDENT)
-    {
-      compileConstDecl();
-      compileConstDecls();
-    }
-//  else return;  OK
+  // Compile a sequence of constant declarations
+  if (lookAhead->tokenType == TK_IDENT) {
+    compileConstDecl();
+    compileConstDecls();
+  }
 }
 
 void compileConstDecl(void) {
-  // TODO
-  // Bạn nào code giúp với
+  // Compile a single constant declaration
   eat(TK_IDENT);
   eat(SB_EQ);
   compileConstant();
@@ -101,14 +104,14 @@ void compileConstDecl(void) {
 }
 
 void compileTypeDecls(void) {
-  // TODO
+  // Compile a sequence of type declarations
   while (lookAhead->tokenType == TK_IDENT) {
     compileTypeDecl();
-  } 
+  }
 }
 
 void compileTypeDecl(void) {
-  // TODO
+  // Compile a single type declaration
   eat(TK_IDENT);
   eat(SB_EQ);
   compileType();
@@ -116,14 +119,14 @@ void compileTypeDecl(void) {
 }
 
 void compileVarDecls(void) {
-  // TODO
-  while (lookAhead->tokenType==TK_IDENT) {
+  // Compile a sequence of variable declarations
+  while (lookAhead->tokenType == TK_IDENT) {
     compileVarDecl();
   }
 }
 
 void compileVarDecl(void) {
-  // TODO
+  // Compile a single variable declaration
   eat(TK_IDENT);
   eat(SB_COLON);
   compileType();
@@ -132,7 +135,7 @@ void compileVarDecl(void) {
 
 void compileSubDecls(void) {
   assert("Parsing subtoutines ....");
-  // TODO
+  // Compile a sequence of subroutine declarations (functions and procedures)
   while (
     lookAhead->tokenType == KW_FUNCTION ||
     lookAhead->tokenType == KW_PROCEDURE
@@ -146,7 +149,7 @@ void compileSubDecls(void) {
 
 void compileFuncDecl(void) {
   assert("Parsing a function ....");
-  // TODO
+  // Compile a function declaration
   eat(KW_FUNCTION);
   eat(TK_IDENT);
   compileParams();
@@ -160,7 +163,7 @@ void compileFuncDecl(void) {
 
 void compileProcDecl(void) {
   assert("Parsing a procedure ....");
-  // TODO
+  // Compile a procedure declaration
   eat(KW_PROCEDURE);
   eat(TK_IDENT);
   compileParams();
@@ -171,7 +174,7 @@ void compileProcDecl(void) {
 }
 
 void compileUnsignedConstant(void) {
-  // TODO
+  // Compile an unsigned constant
   switch (lookAhead->tokenType) {
     case TK_NUMBER:
       eat(TK_NUMBER);
@@ -189,7 +192,7 @@ void compileUnsignedConstant(void) {
 }
 
 void compileConstant(void) {
-  // TODO
+  // Compile a constant (signed or unsigned)
   switch (lookAhead->tokenType) {
     case SB_PLUS:
       eat(SB_PLUS);
@@ -209,7 +212,7 @@ void compileConstant(void) {
 }
 
 void compileConstant2(void) {
-  // TODO
+  // Compile the second part of a constant
   switch (lookAhead->tokenType) {
     case TK_NUMBER:
       eat(TK_NUMBER);
@@ -224,10 +227,13 @@ void compileConstant2(void) {
 }
 
 void compileType(void) {
-  // TODO
+  // Compile a type
   switch (lookAhead->tokenType) {
     case KW_INTEGER:
       eat(KW_INTEGER);
+      break;
+    case KW_BYTE:
+      eat(KW_BYTE);
       break;
     case KW_CHAR:
       eat(KW_CHAR);
@@ -252,13 +258,16 @@ void compileType(void) {
 }
 
 void compileBasicType(void) {
-  // TODO
+  // Compile a basic type (integer or char)
   switch (lookAhead->tokenType) {
     case KW_INTEGER: 
       eat(KW_INTEGER); 
       break;
     case KW_CHAR: 
       eat(KW_CHAR); 
+      break;
+    case KW_BYTE:
+      eat(KW_BYTE);
       break;
     default:
       error(ERR_INVALIDBASICTYPE, lookAhead->lineNo, lookAhead->colNo);
@@ -267,7 +276,7 @@ void compileBasicType(void) {
 }
 
 void compileParams(void) {
-  // TODO
+  // Compile a list of parameters
   if (lookAhead->tokenType == SB_LPAR) {
     eat(SB_LPAR);
     compileParam();
@@ -277,7 +286,7 @@ void compileParams(void) {
 }
 
 void compileParams2(void) {
-  // TODO
+  // Compile additional parameters
   while (lookAhead->tokenType == SB_SEMICOLON) {
     eat(SB_SEMICOLON);
     compileParam();
@@ -285,7 +294,7 @@ void compileParams2(void) {
 }
 
 void compileParam(void) {
-  // TODO
+  // Compile a single parameter
   switch (lookAhead->tokenType) {
     case KW_VAR:
       eat(KW_VAR);
@@ -303,13 +312,13 @@ void compileParam(void) {
 }
 
 void compileStatements(void) {
-  // TODO
+  // Compile a sequence of statements
   compileStatement();
   compileStatements2();
 }
 
 void compileStatements2(void) {
-  // TODO
+  // Compile additional statements
   if (lookAhead->tokenType == SB_SEMICOLON) {
     eat(SB_SEMICOLON);
     compileStatement();
@@ -318,6 +327,7 @@ void compileStatements2(void) {
 }
 
 void compileStatement(void) {
+  // Compile a single statement
   switch (lookAhead->tokenType) {
   case TK_IDENT:
     compileAssignSt();
@@ -334,6 +344,9 @@ void compileStatement(void) {
   case KW_WHILE:
     compileWhileSt();
     break;
+  case KW_REPEAT:
+    compileRepeatSt();
+    break;
   case KW_FOR:
     compileForSt();
     break;
@@ -341,6 +354,7 @@ void compileStatement(void) {
   case SB_SEMICOLON:
   case KW_END:
   case KW_ELSE:
+  case KW_UNTIL:
     break;
     // Error occurs
   default:
@@ -351,7 +365,7 @@ void compileStatement(void) {
 
 void compileAssignSt(void) {
   assert("Parsing an assign statement ....");
-  // TODO
+  // Compile an assignment statement
   eat(TK_IDENT);
   if (lookAhead->tokenType == SB_LSEL)
     compileIndexes();
@@ -362,7 +376,7 @@ void compileAssignSt(void) {
 
 void compileCallSt(void) {
   assert("Parsing a call statement ....");
-  // TODO
+  // Compile a call statement
   eat(KW_CALL);
   eat(TK_IDENT);
   compileArguments();
@@ -371,7 +385,7 @@ void compileCallSt(void) {
 
 void compileGroupSt(void) {
   assert("Parsing a group statement ....");
-  // TODO
+  // Compile a group of statements
   eat(KW_BEGIN);
   compileStatements();
   eat(KW_END);
@@ -404,6 +418,16 @@ void compileWhileSt(void) {
   assert("While statement pased ....");
 }
 
+void compileRepeatSt(void){
+  assert("Parsing a repeat statement");
+  // TODO
+  eat(KW_REPEAT);
+  compileStatements();
+  eat(KW_UNTIL);
+  compileCondition();
+  assert("Repeat statement parsed");
+}
+
 void compileForSt(void) {
   assert("Parsing a for statement ....");
   // TODO
@@ -429,9 +453,9 @@ void compileArguments(void) {
       break;
     
     // EmptySt needs to Check FOLLOW set 
-    case SB_TIMES: case SB_SLASH:
+    case SB_TIMES: case SB_SLASH: case SB_EXP:
     case SB_PLUS: case SB_MINUS:
-    case KW_TO: case KW_DO: case KW_END: case KW_ELSE: case KW_THEN:
+    case KW_TO: case KW_DO: case KW_END: case KW_ELSE: case KW_THEN: case KW_UNTIL:
     case SB_EQ: case SB_NEQ: case SB_LE: case SB_LT: case SB_GE: case SB_GT:
     case SB_RPAR: case SB_RSEL: case SB_COMMA: case SB_SEMICOLON:
       break;
@@ -516,7 +540,7 @@ void compileExpression3(void) {
     break;
 
   // Check the FOLLOW set
-  case KW_TO: case KW_DO: case KW_END: case KW_ELSE: case KW_THEN:
+  case KW_TO: case KW_DO: case KW_END: case KW_ELSE: case KW_THEN: case KW_UNTIL:
   case SB_EQ: case SB_NEQ: case SB_LE: case SB_LT: case SB_GE: case SB_GT:
   case SB_RPAR: case SB_RSEL: case SB_COMMA: case SB_SEMICOLON:
     break;
@@ -546,10 +570,15 @@ void compileTerm2(void) {
     compileFactor();
     compileTerm2();
     break;
+  case SB_EXP:
+    eat(SB_EXP);
+    compileFactor();
+    compileTerm2();
+    break;
   
   // EmptySt needs to Check the FOLLOW set
   case SB_PLUS: case SB_MINUS:
-  case KW_TO: case KW_DO: case KW_END: case KW_ELSE: case KW_THEN:
+  case KW_TO: case KW_DO: case KW_END: case KW_ELSE: case KW_THEN: case KW_UNTIL:
   case SB_EQ: case SB_NEQ: case SB_LE: case SB_LT: case SB_GE: case SB_GT:
   case SB_RPAR: case SB_RSEL: case SB_COMMA: case SB_SEMICOLON:
     break;
