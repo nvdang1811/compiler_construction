@@ -60,6 +60,8 @@ Object* checkDeclaredType(char* name) {
     error(ERR_UNDECLARED_TYPE,currentToken->lineNo, currentToken->colNo);
   if (obj->kind != OBJ_TYPE)
     error(ERR_INVALID_TYPE,currentToken->lineNo, currentToken->colNo);
+
+  return obj;
 }
 
 Object* checkDeclaredVariable(char* name) {
