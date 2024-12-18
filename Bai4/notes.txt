@@ -1,0 +1,9 @@
+Đề kiểm tra: Thêm lệnh gán đồng thời nhiều biến vào KPL:
+x, y, ...., z = <Expression>, <Expression>,..., <Expression>
+
+Ví dụ: Lệnh gán đổi giá trị hai biến x,y := y,x
+
+Giả sử chúng ta cho ép phepps kiểu integer về kiểu double nhưng ngược lại thì không cho phép. Xây dựng các ví dụ ở KPL để kiểm tra các trường hợp lỗi:
+- Vế phải và vế trái có số biến không bằng nhau
+- Sai kiểu dữ liệu tương ứng ở hai Vế
+- Vế trái lệnh gán chứa hằng số

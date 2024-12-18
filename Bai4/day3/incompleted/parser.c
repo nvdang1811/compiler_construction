@@ -172,12 +172,12 @@ void compileFuncDecl(void) {
   funcObj = createFunctionObject(currentToken->string);
   // declare the function object
   declareObject(funcObj);
-  // enter the function's block
+  // enter the functions block
   enterBlock(funcObj->funcAttrs->scope);
-  // parse the function's parameters
+  // parse the functions parameters
   compileParams();
   eat(SB_COLON);
-  // get the funtion's return type
+  // get the funtions return type
   returnType = compileBasicType();
   funcObj->funcAttrs->returnType = returnType;
 
@@ -199,9 +199,9 @@ void compileProcDecl(void) {
   procObj = createProcedureObject(currentToken->string);
   // declare the procedure object
   declareObject(procObj);
-  // enter the procedure's block
+  // enter the procedures block
   enterBlock(procObj->procAttrs->scope);
-  // parse the procedure's parameters
+  // parse the procedures parameters
   compileParams();
 
   eat(SB_SEMICOLON);
@@ -223,7 +223,7 @@ ConstantValue* compileUnsignedConstant(void) {
   case TK_IDENT:
     eat(TK_IDENT);
     // TODO: check if the constant identifier is declared and get its value
-    obj = checkDeclaredConstant(currentToken->value);
+    obj = checkDeclaredConstant(currentToken->string);
     if (obj != NULL)
         constValue = duplicateConstantValue(obj->constAttrs->value);
     else
@@ -277,7 +277,7 @@ ConstantValue* compileConstant2(void) {
   case TK_IDENT:
     eat(TK_IDENT);
     // TODO: check if the integer constant identifier is declared and get its value
-    obj = checkDeclaredConstant(currentToken->value);
+    obj = checkDeclaredConstant(currentToken->string);
     if (obj != NULL)
         constValue = duplicateConstantValue(obj->constAttrs->value);
     else
