@@ -33,7 +33,7 @@ void eat(TokenType tokenType) {
 }
 
 void compileProgram(void) {
-
+  // TODO: create, enter, and exit program block
   eat(KW_PROGRAM);
   eat(TK_IDENT);
   
@@ -47,19 +47,11 @@ void compileProgram(void) {
   eat(SB_PERIOD);
  
   exitBlock();
-
-  // Code cũ
-  // TODO: create, enter, and exit program block
-  // eat(KW_PROGRAM);
-  // eat(TK_IDENT);
-  // eat(SB_SEMICOLON);
-  // compileBlock();
-  // eat(SB_PERIOD);
 }
 
 void compileBlock(void) {
   // TODO: create and declare constant objects
-  Object * constant; 
+Object * constant; 
   if (lookAhead->tokenType == KW_CONST) {
     eat(KW_CONST);
 
@@ -181,7 +173,7 @@ void compileProcDecl(void) {
 
 ConstantValue* compileUnsignedConstant(void) {
   // TODO: create and return an unsigned constant value
-  ConstantValue* constValue;
+ConstantValue* constValue;
 
   switch (lookAhead->tokenType) {
   case TK_NUMBER:
@@ -197,7 +189,7 @@ ConstantValue* compileUnsignedConstant(void) {
     else if (obj->kind != OBJ_CONSTANT) {
       error(ERR_INVALID_CONSTANT, currentToken->lineNo, currentToken->colNo);
     }
-    // Store declared value to constant value
+    // Store decleared value to constant value
     constValue = duplicateConstantValue(obj->constAttrs->value);
     break;
   case TK_CHAR:
@@ -674,14 +666,12 @@ int compile(char *fileName) {
   currentToken = NULL;
   lookAhead = getValidToken();
 
-  // NEW: Tạo bảng symbol
   initSymTab();
 
   compileProgram();
 
-  // NEW: print bảng (print từ program)
-  // Rồi clean bảng
   printObject(symtab->program,0);
+
   cleanSymTab();
 
   free(currentToken);

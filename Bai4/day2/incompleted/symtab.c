@@ -313,8 +313,17 @@ void exitBlock(void) {
   symtab->currentScope = symtab->currentScope->outer;
 }
 
-Object* lookupObject(char *name) {
-  // TODO
+Object* lookupObject(char* name) {
+  // Search for the object in the current scope and parent scopes
+  Scope* scope = symtab->currentScope;
+  while (scope != NULL) {
+    Object* obj = findObject(scope->objList, name);
+    if (obj != NULL) {
+      return obj;
+    }
+    scope = scope->outer;
+  }
+  return NULL;
 }
 
 void declareObject(Object* obj) {
