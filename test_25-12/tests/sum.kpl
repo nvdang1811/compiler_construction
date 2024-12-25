@@ -1,6 +1,6 @@
-Program Example;
+PROGRAM exsu;
 Var x : Integer;
     y : Integer;
 Begin
-  x, y := y, x;
+  SUM x,y;
 End.

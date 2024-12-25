@@ -413,6 +413,9 @@ void compileStatement(void) {
   case KW_FOR:
     compileForSt();
     break;
+  case KW_SUM:
+    compileSumSt();
+    break;
     // EmptySt needs to check FOLLOW tokens
   case SB_SEMICOLON:
   case KW_END:
@@ -519,6 +522,22 @@ void compileForSt(void) {
   eat(KW_DO);
   compileStatement();
 
+}
+
+void compileSumSt(void) {
+  eat(KW_SUM);
+
+  Type* varType;
+  Type* expType;
+
+  varType = compileLValue();
+  checkIntType(varType);
+
+  while (lookAhead->tokenType == SB_COMMA) {
+    eat(SB_COMMA);
+    expType = compileExpression();
+    checkIntType(expType);
+  }
 }
 
 void compileArgument(Object* param) {
