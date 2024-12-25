@@ -2,5 +2,5 @@ Program Example;
 Var x : Integer;
     y : Integer;
 Begin
-  x, y := y, x;
+  x, y := y+12, x*y;
 End.

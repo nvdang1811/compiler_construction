@@ -55,18 +55,13 @@ void compileVariableList(Object* varList[], int* varCount) {
   if (lookAhead->tokenType == TK_IDENT) {
     eat(TK_IDENT);
     varList[(*varCount)] = checkDeclaredLValueIdent(currentToken->string);
-    printf("Variable %s\n", currentToken->string);
     (*varCount)++;
     while (lookAhead->tokenType == SB_COMMA) {
       eat(SB_COMMA);
       eat(TK_IDENT);
       varList[(*varCount)] = checkDeclaredLValueIdent(currentToken->string);
-      printf("Variable %s\n", currentToken->string);
       (*varCount)++;
     }
-  }
-  else{
-    printf("Nothing\n");
   }
 }
 
